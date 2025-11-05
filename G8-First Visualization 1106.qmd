@@ -1,0 +1,75 @@
+---
+title: "Group 8 - First Visualization"
+author: "Mave & Linh"
+format:
+  pdf:
+    pdf-engine: xelatex
+editor: visual
+execute:
+  warning: false
+  message: false
+---
+
+## Load the data
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(readr)
+data_AI <- read_csv("https://raw.githubusercontent.com/MaveKimaraAlexander/PBA-Final-Project-Group-8-/refs/heads/main/Enterprise_GenAI_Adoption_Impact.csv")
+```
+
+## Visualization 1: GAI Adoption Trend
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-align: "center"
+data_AI %>%
+  count(`Adoption Year`) %>%
+  ggplot(aes(x = `Adoption Year`, y = n)) +
+  geom_line(color = "steelblue", size = 1.2) +
+  geom_point(color = "darkred", size = 2) +
+  labs(
+    title = "Trend of GenAI Adoption Over the Years",
+    x = "Year of Adoption",
+    y = "Number of Companies"
+  ) +
+  theme_minimal()+
+  theme(
+    legend.position = "right",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+## Visualization 2: Productivity change over time by Industry
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-align: "center"
+ggplot(data_AI, aes(x = `Adoption Year`, 
+                    y = `Productivity Change (%)`, 
+                    color = Industry, 
+                    group = Industry)) +
+  stat_summary(fun = mean, geom = "line", size = 1) +
+  stat_summary(fun = mean, geom = "point", size = 2) +
+  labs(
+    title = "Trend of Productivity Change by Industry (2022–2024)",
+    x = "Adoption Year",
+    y = "Productivity Change (%)",
+    color = "Industry"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
