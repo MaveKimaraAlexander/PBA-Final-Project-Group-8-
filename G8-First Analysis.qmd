@@ -1,0 +1,95 @@
+---
+title: "Group 8 - First Analysis"
+author: "Mave & Linh"
+format:
+  pdf:
+    pdf-engine: xelatex
+editor: visual
+execute:
+  warning: false
+  message: false
+---
+
+#### Load the data
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(tidyr)
+library(dplyr)
+library(readr)
+data_AI <- read_csv("https://raw.githubusercontent.com/MaveKimaraAlexander/PBA-Final-Project-Group-8-/refs/heads/main/Enterprise_GenAI_Adoption_Impact.csv")
+```
+
+#### Visualization 1: GAI Adoption Trend
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-align: "center"
+data_AI %>%
+  count(`Adoption Year`) %>%
+  ggplot(aes(x = `Adoption Year`, y = n)) +
+  geom_line(color = "steelblue", size = 1.2) +
+  geom_point(color = "darkred", size = 2) +
+  labs(
+    title = "Trend of GenAI Adoption Over the Years",
+    x = "Year of Adoption",
+    y = "Number of Companies"
+  ) +
+  theme_minimal()+
+  theme(
+    legend.position = "right",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+The chart shows a steady rise in the number of companies adopting Generative AI from 2022 to 2024. The climb between 2022 and 2023 is noticeable enough to suggest momentum, and the continuation into 2024 implies the trend isn’t stalling. It feels like gradual, sustained growth rather than a hype-driven spike.
+
+A practical interpretation is that firms increasingly see GenAI as a real tool rather than an experiment. The timeline matches the broader industry shift: large language models became commercially reliable, and major software providers started embedding AI features directly into their platforms.
+
+A more cautious reading is that adoption numbers often rely on self-reported surveys. Companies like to claim they “use AI,” partly because it signals innovation to investors and customers. So the rising line may blend genuine uptake with a bit of image-polishing. Even with that caveat, the direction is unmistakable: GenAI is being built into mainstream business planning.
+
+Taken together, the trend points to a structural change in how firms think about automation and decision-support tools, not just a passing experiment.
+
+\pagebreak
+
+#### Visualization 2: Productivity change over time by Industry
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-align: "center"
+ggplot(data_AI, aes(x = `Adoption Year`, 
+                    y = `Productivity Change (%)`, 
+                    color = Industry, 
+                    group = Industry)) +
+  stat_summary(fun = mean, geom = "line", size = 1) +
+  stat_summary(fun = mean, geom = "point", size = 2) +
+  labs(
+    title = "Trend of Productivity Change by Industry (2022–2024)",
+    x = "Adoption Year",
+    y = "Productivity Change (%)",
+    color = "Industry"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "right",
+    legend.text = element_text(size = 10),
+    plot.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+The second visual tells a more layered story. It shows how average productivity changed across industries after adopting GenAI from 2022 to 2024. The percentages sit in a tight cluster, roughly 18.3% to 18.9%, which suggests that the gains are real but not dramatic. That narrow band hints that most industries are still in an exploratory phase, applying GenAI in pockets rather than overhauling entire workflows.
+
+Some industries consistently sit a bit higher, like Technology, Finance, and Manufacturing. Others like Healthcare, Education, Hospitality, Transportation, stay slightly below the midpoint. That pattern fits what we already know: sectors built on digital processes can integrate AI more smoothly, while highly regulated or labor-heavy sectors face slower adoption and smaller short-term gains.
+
+There’s a caveat, though. Because the chart uses industry means, it hides internal variation. A few standout firms could be raising the average while many peers see little change. Any industry with wide spreads would need deeper analysis before declaring a real productivity shift.
+
+Over time, the lines rise gently rather than sharply. The slow incline reinforces the idea that productivity gains lag behind adoption. Companies need time to redesign processes, train staff, and integrate AI into legacy systems. If that’s true, the stronger effects may not show up until after 2025, when more firms move beyond pilots and into large-scale deployment.
+
+The overall takeaway is that GenAI is nudging productivity upward across the board, but the transformation is gradual, uneven, and shaped by what each sector can realistically absorb right now.
